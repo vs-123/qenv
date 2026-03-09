@@ -15,13 +15,13 @@ void
 process_env (const qenv_t *q)
 {
    size_t total_bytes = 0;
-   
+
    for (char **env = environ; *env != NULL; env++)
       {
          char *entry = *env;
          size_t len  = strlen (entry);
 
-         if (q->search_pattern == NULL
+         if (q->search_pattern == NULL || q->search_pattern[0] == '\0'
              || strstr (entry, q->search_pattern) != NULL)
             {
                printf ("%s\n", entry);
@@ -29,13 +29,15 @@ process_env (const qenv_t *q)
 
          if (q->is_verbose_mode)
             {
-	       total_bytes += len + 1;
+               total_bytes += len + 1;
             }
       }
 
    if (q->is_verbose_mode)
       {
-         printf("===  TOTAL ENVIRONMENT BLOCK SIZE -- %zu BYTES ===\n", total_bytes);
+         fprintf (stderr,
+                  "[VERBOSE] TOTAL ENVIRONMENT BLOCK SIZE -- %zu BYTES\n",
+                  total_bytes);
       }
 }
 
