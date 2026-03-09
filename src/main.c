@@ -15,6 +15,7 @@ void
 process_env (const qenv_t *q)
 {
    size_t total_bytes = 0;
+   size_t ptr_count = 0;
 
    for (char **env = environ; *env != NULL; env++)
       {
@@ -30,17 +31,12 @@ process_env (const qenv_t *q)
          if (q->is_verbose_mode)
             {
                total_bytes += len + 1;
+               ptr_count ++;
             }
       }
 
    if (q->is_verbose_mode)
       {
-         size_t ptr_count = 0;
-         for (char **env = environ; *env != NULL; env++)
-            {
-               ptr_count++;
-            }
-         
          total_bytes += (ptr_count + 1) * sizeof (char *);
          fprintf (stderr,
                   "[VERBOSE] TOTAL ENVIRONMENT BLOCK SIZE -- %zu BYTES\n",
