@@ -27,8 +27,7 @@ process_env (const qenv_t *q)
          if (q->search_pattern == NULL || q->search_pattern[0] == '\0'
              || strstr (entry, q->search_pattern) != NULL)
             {
-               write (STDOUT_FILENO, entry, len);
-               write (STDOUT_FILENO, "\n", 1);
+               puts (entry);
             }
 
          if (q->is_verbose_mode)
