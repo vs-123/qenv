@@ -1,6 +1,6 @@
 * QENV
 
-TODO
+*qenv* is a simple, POSIX-compliant, zero-dependency environment variable inspection utility tool designed for quick and memory-efficient filtering across diverse shell environments.
 
 ** LICENSE
 

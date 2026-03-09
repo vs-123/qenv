@@ -1,8 +1,9 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
+#include <unistd.h>
 
 extern char **environ;
 
@@ -26,7 +27,8 @@ process_env (const qenv_t *q)
          if (q->search_pattern == NULL || q->search_pattern[0] == '\0'
              || strstr (entry, q->search_pattern) != NULL)
             {
-               printf ("%s\n", entry);
+               write (STDOUT_FILENO, entry, len);
+               write (STDOUT_FILENO, "\n", 1);
             }
 
          if (q->is_verbose_mode)
@@ -151,12 +153,14 @@ parse_arguments (int argc, char **argv, qenv_t *q)
             }
       }
 
-   if (argc < (data_idx + 1))
+   if (argc < (data_idx))
       {
          fprintf (stderr, "[ERROR] BAD ARGUMENTS, USE --HELP\n");
          return -1;
       }
 
+   /* will be NULL when no args provided,
+      this NULL is handled in =process_env= */
    q->search_pattern = argv[data_idx];
 
    return 1;
@@ -165,13 +169,15 @@ parse_arguments (int argc, char **argv, qenv_t *q)
 int
 main (int argc, char **argv)
 {
-   qenv_t q = { 0 };
+   qenv_t q   = { 0 };
    int result = parse_arguments (argc, argv, &q);
 
    if (result <= 0)
       {
          return (result == 0) ? 0 : 1;
       }
+
+   process_env (&q);
 
    return 0;
 }
