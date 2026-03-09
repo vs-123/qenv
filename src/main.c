@@ -1,7 +1,7 @@
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <stddef.h>
-#include <stdbool.h>
 
 extern char **environ;
 
@@ -12,20 +12,29 @@ typedef struct
 } qenv_t;
 
 void
-process_env (qenv_t q)
+process_env (const qenv_t *q)
 {
-   /* TODO */
+   for (char **env = environ; *env != NULL; env++)
+      {
+         char *entry = *env;
+         size_t len  = strlen (entry);
+
+         if (q->search_pattern == NULL
+             || strstr (entry, q->search_pattern) != NULL)
+            {
+               printf ("%s\n", entry);
+            }
+
+         if (q->is_verbose_mode)
+            {
+	       /* TODO */
+            }
+      }
 }
 
 int
 main (void)
 {
-   for (char **env = environ; *env != NULL; env++)
-      {
-         char *entry = *env;
-
-         printf ("%s\n", entry);
-      }
 
    return 0;
 }
