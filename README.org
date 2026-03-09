@@ -2,6 +2,28 @@
 
 *qenv* is a simple, POSIX-compliant, zero-dependency environment variable inspection utility tool designed for quick and memory-efficient filtering across diverse shell environments.
 
+** BUILD INSTRUCTIONS
+
+Obtain a local copy of this repository with =git clone= and enter it.
+#+begin_example
+  % git clone https://github.com/vs-123/qenv.git
+  % cd qenv
+#+end_example
+
+Create a =build= directory and build this project with =cmake= inside it
+#+begin_example
+  % mkdir build && cd build
+  % cmake ..
+  % cmake --build .
+  % ls -F
+  qenv*  compile_commands.json  Makefile  CMakeCache.txt
+#+end_example
+
+You may now use the generated binary =qenv=
+#+begin_example  
+  % ./qenv --help
+#+end_example
+
 ** FEATURES
 
 - **[STREAM-ORIENTED TRAVERSAL]** -- Direct iteration through the global environment pointer array. This ensures constant memory usage regardless of the environment's size. This satisfies the requirement to handle multi-megabyte environment blocks without buffering the entire output set.
