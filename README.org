@@ -26,9 +26,9 @@ You may now use the generated binary =qenv=
 
 ** FEATURES
 
-- **[STREAM-ORIENTED TRAVERSAL]** -- Direct iteration through the global environment pointer array. This ensures constant memory usage regardless of the environment's size. This satisfies the requirement to handle multi-megabyte environment blocks without buffering the entire output set.
+- *[STREAM-ORIENTED TRAVERSAL]* -- Direct iteration through the global environment pointer array. This ensures constant memory usage regardless of the environment's size. This satisfies the requirement to handle multi-megabyte environment blocks without buffering the entire output set.
   
-- **[PORTABLE MEMORY CALCULATION]** -- Flag =-v= is available to provide a total environment block size measurement by aggregating the length of all environment strings and the pointer array overhead. This maintainins POSIX portability by avoiding non-standard filesystem interfaces.
+- *[PORTABLE MEMORY CALCULATION]* -- Flag =-v= is available to provide a total environment block size measurement by aggregating the length of all environment strings and the pointer array overhead. This maintainins POSIX portability by avoiding non-standard filesystem interfaces.
 
 ** BENCHMARKS
 
