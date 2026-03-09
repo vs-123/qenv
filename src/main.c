@@ -14,6 +14,8 @@ typedef struct
 void
 process_env (const qenv_t *q)
 {
+   size_t total_bytes = 0;
+   
    for (char **env = environ; *env != NULL; env++)
       {
          char *entry = *env;
@@ -27,8 +29,13 @@ process_env (const qenv_t *q)
 
          if (q->is_verbose_mode)
             {
-	       /* TODO */
+	       total_bytes += len + 1;
             }
+      }
+
+   if (q->is_verbose_mode)
+      {
+         printf("===  TOTAL ENVIRONMENT BLOCK SIZE -- %zu BYTES ===\n", total_bytes);
       }
 }
 
