@@ -10,13 +10,25 @@ Obtain a local copy of this repository with =git clone= and enter it.
   % cd qenv
 #+end_example
 
-Create a =build= directory and build this project with =cmake= inside it
+*CMAKE METHOD*
+
+Create a =build= directory and build this project with =cmake= inside it.
 #+begin_example
   % mkdir build && cd build
   % cmake ..
   % cmake --build .
   % ls -F
   qenv*  compile_commands.json  Makefile  CMakeCache.txt
+#+end_example
+
+*MANUAL METHOD*
+
+Create a =build= directory to keep things tidy, and then use your favourite compiler to compile the source code.
+#+begin_example
+  % mkdir build && cd build
+  % cc -o qenv ../src/main.c
+  % ls -F
+  qenv*
 #+end_example
 
 You may now use the generated binary =qenv=

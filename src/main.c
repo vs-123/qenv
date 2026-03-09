@@ -87,7 +87,7 @@ print_usage (const char *program_name)
 {
 #define popt(opt, desc) printf ("   %-45s %s\n", opt, desc)
    printf ("[USAGE] %s [FLAGS] [<SEARCH-PATTERN>]\n", program_name);
-   printf ("[DESC.] TODO\n");
+   printf ("[DESC.] QENV IS A POSIX-COMPLIANT ENVIRONMENT VARIABLE INSPECTION UTILITY TOOL DESIGNED FOR QUICK FILTERING ACROSS DIVERSE SHELL ENVIRONMENTS.\n");
 
    printf ("[FLAGS]\n");
    popt ("--HELP, -H, -?", "PRINT THIS HELP MESSAGE AND EXIT");
@@ -102,7 +102,7 @@ print_info (void)
 {
 #define pinfo(aspect, detail) printf ("   * %-17s %s\n", aspect, detail)
    printf ("[INFO]\n");
-   printf ("   QENV -- TODO\n");
+   printf ("   QENV -- A SIMPLE, POSIX-COMPLIANT, ZERO-DEPENDENCY ENVIRONMENT VARIABLE INSPECTION UTILITY TOOL DESIGNED FOR QUICK AND MEMORY-EFFICIENT FILTERING ACROSS DIVERSE SHELL ENVIRONMENTS.\n");
    printf ("\n");
    pinfo ("[AUTHOR]", "vs-123 @ https://github.com/vs-123");
    pinfo ("[REPOSITORY]", "https://github.com/vs-123/qenv");
