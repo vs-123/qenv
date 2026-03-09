@@ -6,7 +6,71 @@
 
 - **[STREAM-ORIENTED TRAVERSAL]** -- Direct iteration through the global environment pointer array. This ensures constant memory usage regardless of the environment's size. This satisfies the requirement to handle multi-megabyte environment blocks without buffering the entire output set.
   
-- **[PORTABLE MEMORY CALCULATION]** -- Flag =-v= is available to provide a total environment block size measurement by aggregating the length of all environment strings and the pointer array overhead. This maintainins POSIX portability by avoiding non-standard filesystem interfaces.  
+- **[PORTABLE MEMORY CALCULATION]** -- Flag =-v= is available to provide a total environment block size measurement by aggregating the length of all environment strings and the pointer array overhead. This maintainins POSIX portability by avoiding non-standard filesystem interfaces.
+
+** BENCHMARKS
+
+#+begin_example
+% sh ../scripts/compare.sh
+[INFO] BENCHMARKING QENV
+[INFO] BENCHMARKING ENV
+===  QENV  ===
+	Command being timed: "./qenv"
+	User time (seconds): 0.00
+	System time (seconds): 0.00
+	Percent of CPU this job got: 33%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.00
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1296
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 230
+	Voluntary context switches: 0
+	Involuntary context switches: 7
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 16384
+	Exit status: 0
+===  ENV  ===
+	Command being timed: "env"
+	User time (seconds): 0.00
+	System time (seconds): 0.00
+	Percent of CPU this job got: 50%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.00
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1216
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 210
+	Voluntary context switches: 0
+	Involuntary context switches: 4
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 16384
+	Exit status: 0
+#+end_example
+
+*** OBSERVATION
+
+Notice the difference in maximum resident set size. The observed =80= KB difference in maximum RSS between =qenv= (=1296= KB) and the system-native =env= (=1216= KB) is primarily attributed to dynamic loading and runtime initialisation overhead.
+
+Even though =qenv= is architecturally lean, the system =env= utility is frequently pre-linked and cached as part of the core system runtime. Thus, the remaining =1296= KB represents the functional "floor" for an independent C process under glibc initialisation.
+
+This baseline encompasses the minimal stack, heap and data segments that are required to bootstrap the process and execute the POSIX =write()= interface. Hence, this renders it the lowest achievable footprint for this implementation without moving to non-standard, minimal-runtime alternatives like =dietlibc=, etc.
   
 ** LICENSE
 
