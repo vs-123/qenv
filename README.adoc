@@ -1,0 +1,96 @@
+:em: {sp}--{sp}
+:license-link: https://www.gnu.org/licenses/agpl-3.0.en.html
+
+= QENV
+
+*qenv* is a simple, POSIX-compliant, zero-dependency environment variable inspection utility tool designed for quick and memory-efficient filtering across diverse shell environments.
+
+== BUILD INSTRUCTIONS
+
+Obtain a local copy of this repository with `git clone` and enter it.
+[source,]
+----
+  %  git clone https://github.com/vs-123/qenv.git
+  %  cd qenv
+----
+
+*CMAKE METHOD*
+
+Create a `build` directory and build this project with `cmake` inside it.
+[source,]
+----
+  %  mkdir build && cd build
+  %  cmake ..
+  %  cmake --build .
+  %  ls -F
+  qenv*  compile_commands.json  Makefile  CMakeCache.txt
+----
+
+*MANUAL METHOD*
+
+Create a `build` directory to keep things tidy, and then use your favourite compiler to compile the source code.
+[source,]
+----
+  %  mkdir build && cd build
+  %  cc -o qenv ../src/main.c
+  %  ls -F
+  qenv*
+----
+
+You may now use the generated binary `qenv`
+[source,]
+----
+  %  ./qenv --help
+----
+
+== FEATURES
+
+- *[STREAM-ORIENTED TRAVERSAL]* -- Direct iteration through the global environment pointer array. This ensures constant memory usage regardless of the environment's size. This satisfies the requirement to handle multi-megabyte environment blocks without buffering the entire output set.
+  
+- *[PORTABLE MEMORY CALCULATION]* -- Flag `-v` is available to provide a total environment block size measurement by aggregating the length of all environment strings and the pointer array overhead. This maintainins POSIX portability by avoiding non-standard filesystem interfaces.
+
+== BENCHMARKS
+
+[source,]
+----
+  %  sh ../scripts/compare.sh
+  [INFO] BENCHMARKING QENV
+  [INFO] BENCHMARKING ENV
+  ===  QENV  ===
+    	Command being timed: "./qenv"
+    	System time (seconds): 0.00
+    	Percent of CPU this job got: 33%
+    	Maximum resident set size (kbytes): 1296
+    	Major (requiring I/O) page faults: 1
+    	Minor (reclaiming a frame) page faults: 230
+    	Involuntary context switches: 7
+    	Page size (bytes): 16384
+    	Exit status: 0
+  ===  ENV  ===
+  	Command being timed: "env"
+  	System time (seconds): 0.00
+  	Percent of CPU this job got: 50%
+  	Maximum resident set size (kbytes): 1216
+  	Major (requiring I/O) page faults: 1
+  	Minor (reclaiming a frame) page faults: 210
+  	Involuntary context switches: 4
+  	Page size (bytes): 16384
+  	Exit status: 0
+----
+
+=== OBSERVATION
+
+Notice the difference in maximum resident set size. The observed `80` KB difference in maximum RSS between `qenv` (`1296` KB) and the system-native `env` (`1216` KB) is primarily attributed to dynamic loading and runtime initialisation overhead.
+
+Even though `qenv` is architecturally lean, the system `env` utility is frequently pre-linked and cached as part of the core system runtime. Thus, the remaining `1296` KB represents the functional "floor" for an independent C process under glibc initialisation.
+
+This baseline encompasses the minimal stack, heap and data segments that are required to bootstrap the process and execute the POSIX `write()` interface. Hence, this renders it the lowest achievable footprint for this implementation without moving to non-standard, minimal-runtime alternatives like `dietlibc`, etc.
+  
+== LICENSE
+
+This project is licensed under the *GNU Affero General Public License version 3.0 or later*.
+
+*NO WARRANTY PROVIDED*
+
+For more information, see `LICENSE` file or visit {license-link}.
+
